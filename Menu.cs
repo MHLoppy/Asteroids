@@ -26,7 +26,7 @@ public class Menu
     private int _ShipSelection;
     private int _Lockout;
     private int _MenuSelectPlayer = 0;
-    private double _DifficultySelect = 0;
+    private int _DifficultySelect = 0;
     private string[] _Difficulity = {"Easy","Normal","Hard"};
     private LinkedList<Bitmap> _ShipsBMP;
     private SplashKitSDK.Triangle _tri;
@@ -289,8 +289,14 @@ public class Menu
 
             double thumbX = sliderX + (thumbWidth*Difficulity);
             double thumbY = sliderY;
+            int red,green,blue;
+            DifficultyColor[0] = Color.Green; //because RGBA doesn't support lime green
+            red = SplashKit.RedOf(DifficultyColor[(int)Difficulity]);
+            green = SplashKit.GreenOf(DifficultyColor[(int)Difficulity]);
+            blue = SplashKit.BlueOf(DifficultyColor[(int)Difficulity]);
+
             SplashKit.DrawRectangle(Color.Yellow, thumbX, thumbY, thumbWidth, thumbHeight);
-            SplashKit.FillRectangle(Color.RGBAColor(255,255,0,0.1), thumbX, thumbY, thumbWidth, thumbHeight);
+            SplashKit.FillRectangle(Color.RGBAColor(red,green,blue,0.15), thumbX, thumbY, thumbWidth, thumbHeight);
         }
         
 
