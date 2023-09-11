@@ -25,7 +25,7 @@ public class Menu
     private int _MainMenuOption;
     private int _ShipSelection;
     private int _Lockout;
-    private int _MenuSelectPlayer1 = 0, _MenuSelectPlayer2 = 0;
+    private int _MenuSelectPlayer = 0;
     private double _DifficultySelect = 0;
     private string[] _Difficulity = {"Easy","Normal","Hard"};
     private LinkedList<Bitmap> _ShipsBMP;
@@ -276,7 +276,6 @@ public class Menu
         int X_Ships = (_gameWindow.Width - _ShipsBMP.First().Width) / (_ShipsBMP.Count + 1);
         int FontSize = (int)(60 * gameScale);
         Color[] DifficultyColor = {Color.LightGreen, Color.White, Color.Red};
-        int MenuSelectPlayer = Player == "1"? _MenuSelectPlayer1 : _MenuSelectPlayer2;
 
         double sliderX = 80 * _Difficulity.Length * gameScale;
         double sliderY = 290 * gameScale;
@@ -315,12 +314,12 @@ public class Menu
             // }
         }
 
-        if(MenuSelectPlayer == 0){
+        if(_MenuSelectPlayer == 0){
             // Draw the slider
             SplashKit.DrawRectangle(Color.White, sliderX, sliderY, sliderWidth, sliderHeight);
             // Draw ship box
             SplashKit.DrawRectangle(Color.Gray, 80 *gameScale, Y_Ships - 30 * gameScale, X_Ships + _ShipsBMP.Count() * (X_Ships - 50 *gameScale), 165 * gameScale);
-        }else if(MenuSelectPlayer == 1){
+        }else if(_MenuSelectPlayer == 1){
             SplashKit.DrawRectangle(Color.Gray, sliderX, sliderY, sliderWidth, sliderHeight);
             SplashKit.DrawRectangle(Color.White, 80 *gameScale, Y_Ships - 30 * gameScale, X_Ships + _ShipsBMP.Count() * (X_Ships - 50 *gameScale), 165 * gameScale);
         }
@@ -437,13 +436,13 @@ public class Menu
     {
         //if player press up or down, change menu selection
         if (SplashKit.KeyTyped(Controls.Keylookup("P1_up"))){
-            _MenuSelectPlayer1 = _MenuSelectPlayer1 == 0 ? 1 : 0;
+            _MenuSelectPlayer = _MenuSelectPlayer == 0 ? 1 : 0;
             
         }else if(SplashKit.KeyTyped(Controls.Keylookup("P1_down"))){
-            _MenuSelectPlayer1 = _MenuSelectPlayer1 == 0 ? 1 : 0;
+            _MenuSelectPlayer = _MenuSelectPlayer == 0 ? 1 : 0;
         }
 
-        if(_MenuSelectPlayer1 == 0){
+        if(_MenuSelectPlayer == 0){
             if (SplashKit.KeyTyped(Controls.Keylookup("P1_left")))
             {
                 _DifficultySelect = _DifficultySelect - 1 == -1? 2 : _DifficultySelect - 1;
@@ -453,7 +452,7 @@ public class Menu
                 _DifficultySelect = _DifficultySelect + 1 == 3? 0 : _DifficultySelect + 1;
             }
             
-        }else if(_MenuSelectPlayer1 == 1){
+        }else if(_MenuSelectPlayer == 1){
             if (SplashKit.KeyTyped(Controls.Keylookup("P1_left")))
             {
                 _ShipSelection = indexCheck(_ShipSelection, -1);
@@ -492,33 +491,14 @@ public class Menu
 
     private void HandleInputPlayer2Selection()
     {
-        //if player press up or down, change menu selection
-        if (SplashKit.KeyTyped(Controls.Keylookup("P2_up"))){
-            _MenuSelectPlayer2 = _MenuSelectPlayer2 == 0 ? 1 : 0;
-            
-        }else if(SplashKit.KeyTyped(Controls.Keylookup("P2_down"))){
-            _MenuSelectPlayer2 = _MenuSelectPlayer2 == 0 ? 1 : 0;
+        _MenuSelectPlayer = 1;
+        if (SplashKit.KeyTyped(Controls.Keylookup("P2_left")))
+        {
+            _ShipSelection = indexCheck(_ShipSelection, -1);
         }
-
-        if(_MenuSelectPlayer2 == 0){
-            if (SplashKit.KeyTyped(Controls.Keylookup("P2_left")))
-            {
-                _DifficultySelect = _DifficultySelect - 1 == -1? 2 : _DifficultySelect - 1;
-            }
-            else if (SplashKit.KeyTyped(Controls.Keylookup("P2_right")))
-            {
-                _DifficultySelect = _DifficultySelect + 1 == 3? 0 : _DifficultySelect + 1;
-            }
-            
-        }else if(_MenuSelectPlayer2 == 1){
-            if (SplashKit.KeyTyped(Controls.Keylookup("P2_left")))
-            {
-                _ShipSelection = indexCheck(_ShipSelection, -1);
-            }
-            else if (SplashKit.KeyTyped(Controls.Keylookup("P2_right")))
-            {
-                _ShipSelection = indexCheck(_ShipSelection, 1);
-            }
+        else if (SplashKit.KeyTyped(Controls.Keylookup("P2_right")))
+        {
+            _ShipSelection = indexCheck(_ShipSelection, 1);
         }
 
         
