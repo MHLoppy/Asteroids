@@ -290,6 +290,7 @@ public class Menu
             double thumbX = sliderX + (thumbWidth*Difficulity);
             double thumbY = sliderY;
             SplashKit.DrawRectangle(Color.Yellow, thumbX, thumbY, thumbWidth, thumbHeight);
+            SplashKit.FillRectangle(Color.RGBAColor(255,255,0,0.1), thumbX, thumbY, thumbWidth, thumbHeight);
         }
         
 
