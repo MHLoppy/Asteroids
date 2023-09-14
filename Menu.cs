@@ -279,13 +279,13 @@ public class Menu
 
         double sliderX = 80 * _Difficulity.Length * gameScale;
         double sliderY = 290 * gameScale;
-        double sliderWidth = 600;
-        double sliderHeight = 25;
+        double sliderWidth = 960 * gameScale;
+        double sliderHeight = 40 * gameScale;
 
         void DrawSlider(double Difficulity){
 
             double thumbWidth =  sliderWidth/_Difficulity.Length;
-            double thumbHeight = 25;
+            double thumbHeight =  sliderHeight;
 
             double thumbX = sliderX + (thumbWidth*Difficulity);
             double thumbY = sliderY;
@@ -320,6 +320,8 @@ public class Menu
             //     temp.DrawLine(Color.Red, temp.Width, 0, 0, temp.Height);
             // }
         }
+
+        Console.Out.WriteLine(gameScale);
 
         if(_MenuSelectPlayer == 0){
             // Draw the slider
