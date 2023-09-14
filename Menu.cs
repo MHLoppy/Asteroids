@@ -321,8 +321,6 @@ public class Menu
             // }
         }
 
-        Console.Out.WriteLine(gameScale);
-
         if(_MenuSelectPlayer == 0){
             // Draw the slider
             SplashKit.DrawRectangle(Color.White, sliderX, sliderY, sliderWidth, sliderHeight);
