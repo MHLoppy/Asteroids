@@ -2,6 +2,8 @@ using System;
 using SplashKitSDK;
 using System.Collections.Generic;
 using static AsteroidsGame.Program;
+using System.Security.AccessControl;
+using System.Runtime.CompilerServices;
 
 // 
 // 
@@ -23,6 +25,9 @@ public class Menu
     private int _MainMenuOption;
     private int _ShipSelection;
     private int _Lockout;
+    private int _MenuSelectPlayer = 0;
+    private int _DifficultySelect = 0;
+    private string[] _Difficulity = {"Easy","Normal","Hard"};
     private LinkedList<Bitmap> _ShipsBMP;
     private SplashKitSDK.Triangle _tri;
 
@@ -267,10 +272,33 @@ public class Menu
 
     private void DrawShipSelection(string Player, string MoveLeft, string MoveRight, string Select)
     {
-
         int Y_Ships = (_gameWindow.Height - _ShipsBMP.First().Height) / 2;
         int X_Ships = (_gameWindow.Width - _ShipsBMP.First().Width) / (_ShipsBMP.Count + 1);
         int FontSize = (int)(60 * gameScale);
+        Color[] DifficultyColor = {Color.LightGreen, Color.White, Color.Red};
+
+        double sliderX = 80 * _Difficulity.Length * gameScale;
+        double sliderY = 290 * gameScale;
+        double sliderWidth = 960 * gameScale;
+        double sliderHeight = 40 * gameScale;
+
+        void DrawSlider(double Difficulity){
+
+            double thumbWidth =  sliderWidth/_Difficulity.Length;
+            double thumbHeight =  sliderHeight;
+
+            double thumbX = sliderX + (thumbWidth*Difficulity);
+            double thumbY = sliderY;
+            int red,green,blue;
+            DifficultyColor[0] = Color.Green; //because RGBA doesn't support lime green
+            red = SplashKit.RedOf(DifficultyColor[(int)Difficulity]);
+            green = SplashKit.GreenOf(DifficultyColor[(int)Difficulity]);
+            blue = SplashKit.BlueOf(DifficultyColor[(int)Difficulity]);
+
+            SplashKit.DrawRectangle(Color.Yellow, thumbX, thumbY, thumbWidth, thumbHeight);
+            SplashKit.FillRectangle(Color.RGBAColor(red,green,blue,0.15), thumbX, thumbY, thumbWidth, thumbHeight);
+        }
+        
 
         for (int i = 0; i < _ShipsBMP.Count(); i++)
         {
@@ -293,7 +321,24 @@ public class Menu
             // }
         }
 
-        SplashKit.DrawTextOnWindow(_gameWindow, $"Player {Player} Select Your Ship", Color.White, _GameFont, FontSize, 75 * gameScale, 200 * gameScale);
+        if(_MenuSelectPlayer == 0){
+            // Draw the slider
+            SplashKit.DrawRectangle(Color.White, sliderX, sliderY, sliderWidth, sliderHeight);
+            // Draw ship box
+            SplashKit.DrawRectangle(Color.Gray, 80 *gameScale, Y_Ships - 30 * gameScale, X_Ships + _ShipsBMP.Count() * (X_Ships - 50 *gameScale), 165 * gameScale);
+        }else if(_MenuSelectPlayer == 1){
+            SplashKit.DrawRectangle(Color.Gray, sliderX, sliderY, sliderWidth, sliderHeight);
+            SplashKit.DrawRectangle(Color.White, 80 *gameScale, Y_Ships - 30 * gameScale, X_Ships + _ShipsBMP.Count() * (X_Ships - 50 *gameScale), 165 * gameScale);
+        }
+
+        SplashKit.DrawTextOnWindow(_gameWindow, $"Player {Player} Select Your Ship", Color.White, _GameFont, FontSize, 75 * gameScale, 160 * gameScale);
+        SplashKit.DrawTextOnWindow(_gameWindow, "Diffulity", Color.White, _GameFont, (int)(40 * gameScale), 75 * gameScale, 280 * gameScale);
+        
+        for(int i = 0; i < _Difficulity.Length; i++){
+            SplashKit.DrawTextOnWindow(_gameWindow, _Difficulity[i], DifficultyColor[i], _GameFont, (int)(40 * gameScale), sliderX + (sliderWidth/_Difficulity.Length*i) + (80-_Difficulity[i].Length*2.5), sliderY-2);
+        }
+        DrawSlider(_DifficultySelect);
+       
         SplashKit.DrawTextOnWindow(_gameWindow, "Controls", Color.White, _GameFont, (int)(40 * gameScale), 75 * gameScale, 550 * gameScale);
         SplashKit.DrawTextOnWindow(_gameWindow, MoveLeft, Color.White, _GameFont, (int)(30 * gameScale), 75 * gameScale, 600 * gameScale);
         SplashKit.DrawTextOnWindow(_gameWindow, MoveRight, Color.White, _GameFont, (int)(30 * gameScale), 75 * gameScale, 640 * gameScale);
@@ -396,15 +441,37 @@ public class Menu
 
     private void HandleInputPlayer1Selection()
     {
-        if (SplashKit.KeyTyped(Controls.Keylookup("P1_left")))
-        {
-            _ShipSelection = indexCheck(_ShipSelection, -1);
+        //if player press up or down, change menu selection
+        if (SplashKit.KeyTyped(Controls.Keylookup("P1_up"))){
+            _MenuSelectPlayer = _MenuSelectPlayer == 0 ? 1 : 0;
+            
+        }else if(SplashKit.KeyTyped(Controls.Keylookup("P1_down"))){
+            _MenuSelectPlayer = _MenuSelectPlayer == 0 ? 1 : 0;
         }
-        else if (SplashKit.KeyTyped(Controls.Keylookup("P1_right")))
-        {
-            _ShipSelection = indexCheck(_ShipSelection, 1);
+
+        if(_MenuSelectPlayer == 0){
+            if (SplashKit.KeyTyped(Controls.Keylookup("P1_left")))
+            {
+                _DifficultySelect = _DifficultySelect - 1 == -1? 2 : _DifficultySelect - 1;
+            }
+            else if (SplashKit.KeyTyped(Controls.Keylookup("P1_right")))
+            {
+                _DifficultySelect = _DifficultySelect + 1 == 3? 0 : _DifficultySelect + 1;
+            }
+            
+        }else if(_MenuSelectPlayer == 1){
+            if (SplashKit.KeyTyped(Controls.Keylookup("P1_left")))
+            {
+                _ShipSelection = indexCheck(_ShipSelection, -1);
+            }
+            else if (SplashKit.KeyTyped(Controls.Keylookup("P1_right")))
+            {
+                _ShipSelection = indexCheck(_ShipSelection, 1);
+            }
         }
-        else if (SplashKit.KeyTyped(Controls.Keylookup("P1_button1")))
+
+        
+        if (SplashKit.KeyTyped(Controls.Keylookup("P1_button1")))
         {
             p1Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
             //_Lockout = _ShipSelection;
@@ -431,6 +498,7 @@ public class Menu
 
     private void HandleInputPlayer2Selection()
     {
+        _MenuSelectPlayer = 1;
         if (SplashKit.KeyTyped(Controls.Keylookup("P2_left")))
         {
             _ShipSelection = indexCheck(_ShipSelection, -1);
@@ -439,7 +507,9 @@ public class Menu
         {
             _ShipSelection = indexCheck(_ShipSelection, 1);
         }
-        else if (SplashKit.KeyTyped(Controls.Keylookup("P2_button1")))
+
+        
+        if (SplashKit.KeyTyped(Controls.Keylookup("P2_button1")))
         {
             p2Ship = _ShipsBMP.ElementAt(_ShipSelection).Filename;
             GameStarted = true;
