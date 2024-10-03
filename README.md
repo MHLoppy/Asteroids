@@ -7,8 +7,6 @@
 - **Code quality:** Fair
 - **Gameplay implementation:** Complete
 
-Build using `skm dotnet build`, run using `skm dotnet run`.
-
 ## Gameplay overview
 
 An Asteroids clone supporting 1-2 players where the goal is to stay alive while increasing score. Players must avoid collisions with asteroids and other objects while moving within a confined space. There are bosses and multiple levels.
