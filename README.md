@@ -13,21 +13,21 @@ An Asteroids clone supporting 1-2 players where the goal is to stay alive while 
 
 ### Player 1 Controls
 
-| Key          | Action        |
-|--------------|---------------|
-| Up arrow     | Move Forward  |
-| Left arrow   | Rotate Left   |
-| Right arrow  | Rotate Right  |
-| Ctrl         | Fire          |
+| Action        | Key          |
+|---------------|--------------|
+| Move Forward  | Up arrow     |
+| Rotate Left   | Left arrow   |
+| Rotate Right  | Right arrow  |
+| Fire          | CTRL         |
 
 ### Player 2 Controls
 
-| Key          | Action        |
-|--------------|---------------|
-| S/R Key      | Move Forward  |
-| D Key        | Rotate Left   |
-| G Key        | Rotate Right  |
-| A Key        | Fire          |
+| Action        | Key          |
+|---------------|--------------|
+| Move Forward  | S/R Key      |
+| Rotate Left   | D Key        |
+| Rotate Right  | G Key        |
+| Fire          | A Key        |
 
 ## Other
 
