@@ -38,3 +38,11 @@ An Asteroids clone supporting 1-2 players where the goal is to stay alive while 
 ![](/docs/screenshot-01.png)
 
 ![](/docs/screenshot-02.png)
+
+## Credits
+
+Originally created by 2023-T1 team:
+
+- Phil Williams
+- Riley Michael
+- Ro Wern Ong
